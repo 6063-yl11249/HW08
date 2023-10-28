@@ -1,39 +1,57 @@
-let img1; // Image 1
-let img2; // Image 2
-let img3; // Image 3
-let img4; // Image 4
-let currentImage; // The currently displayed image
+let img1;
+let img2;
+let img3;
+let img4; 
+let currentImage;
 let t = 0;
 let slider;
-let switchButton1; // Button for Image 1
-let switchButton2; // Button for Image 2
-let switchButton3; // Button for Image 3
-let switchButton4; // Button for Image 4
+let switchButton1;
+let switchButton2; 
+let switchButton3; 
+let switchButton4; 
 
 function preload() {
   img1 = loadImage("./Mondriaan.jpg");
   img2 = loadImage("./M2.jpg");
   img3 = loadImage("./M3.jpg");
   img4 = loadImage("./M4.jpg");
-  currentImage = img1; // Start with the first image
+  currentImage = img1; 
 }
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  pixelDensity(1);
-  print("Original size: ", currentImage.width, " x ", currentImage.height);
+function switchToImage1() {
+  currentImage = img1;
+  updateImage();
+}
+
+function switchToImage2() {
+  currentImage = img2;
+  updateImage();
+}
+
+function switchToImage3() {
+  currentImage = img3;
+  updateImage();
+}
+
+function switchToImage4() {
+  currentImage = img4;
+  updateImage();
+}
+
+function updateImage() {
   let aspectRatio = currentImage.width / currentImage.height;
   let newHeight = windowHeight;
   let newWidth = windowHeight * aspectRatio;
   currentImage.resize(newWidth, newHeight);
-  print("Scaled size: ", currentImage.width, " x ", currentImage.height);
   currentImage.loadPixels();
-  print("pixel array size: ", currentImage.pixels.length);
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
 
   slider = createSlider(0, 255, 0);
   slider.position(width - 200, 100);
 
-  // Create four buttons, one for each image
   switchButton1 = createButton('Image 1');
   switchButton1.position(width - 200, 150);
   switchButton1.mousePressed(switchToImage1);
@@ -49,22 +67,9 @@ function setup() {
   switchButton4 = createButton('Image 4');
   switchButton4.position(width - 200, 240);
   switchButton4.mousePressed(switchToImage4);
-}
 
-function switchToImage1() {
-  currentImage = img1;
-}
-
-function switchToImage2() {
-  currentImage = img2;
-}
-
-function switchToImage3() {
-  currentImage = img3;
-}
-
-function switchToImage4() {
-  currentImage = img4;
+  pixelDensity(1);
+  updateImage();
 }
 
 function draw() {
@@ -91,10 +96,11 @@ function draw() {
     }
   }
 
-  t = t + 0.01; // Update time for animation
+  t = t + 0.01;
+
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  setup();
+  updateImage();
 }
