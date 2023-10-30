@@ -1,6 +1,7 @@
 let img;
 let t = 0;
 let colorThreshold;
+let originalPixels; 
 let button1;
 let button2;
 let button3;
@@ -19,6 +20,7 @@ function setup() {
   let newWidth = windowHeight * aspectRatio;
   img.resize(newWidth, newHeight);
   img.loadPixels();
+  originalPixels = img.pixels.slice();
   image(img, 0, 0);
 
   button1 = createButton('Red');
@@ -44,7 +46,6 @@ function draw() {
   background(10, 10);
   noStroke();
   image(img, 0, 0);
-
   if (buttonPressed === "red") {
     applyColorEffect("red", 100);
   } else if (buttonPressed === "yellow") {
@@ -53,12 +54,14 @@ function draw() {
     applyColorEffect("blue", 20);
   }
 
-  
 }
 
 function applyColorEffect(selectedColor, colorThreshold) {
-  image(img, 0, 0);
-  img.updatePixels();
+  img.loadPixels()
+
+  for (let i = 0; i < img.pixels.length; i++) {
+    img.pixels[i] = originalPixels[i]; 
+  }
 
   for (let vi = 0; vi < img.pixels.length; vi += 4) {
     let redVal = img.pixels[vi];
