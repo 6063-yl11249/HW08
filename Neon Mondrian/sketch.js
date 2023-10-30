@@ -1,6 +1,6 @@
 let img;
 let t = 0;
-let colorThreshold = 100;
+let colorThreshold;
 let button1;
 let button2;
 let button3;
@@ -19,6 +19,7 @@ function setup() {
   let newWidth = windowHeight * aspectRatio;
   img.resize(newWidth, newHeight);
   img.loadPixels();
+  image(img, 0, 0);
 
   button1 = createButton('Red');
   button1.position(width - 200, 100);
@@ -42,25 +43,29 @@ function setup() {
 function draw() {
   background(10, 10);
   noStroke();
+  image(img, 0, 0);
 
   if (buttonPressed === "red") {
-    applyColorEffect("red");
+    applyColorEffect("red", 100);
   } else if (buttonPressed === "yellow") {
-    applyColorEffect("yellow");
+    applyColorEffect("yellow", 100);
   } else if (buttonPressed === "blue") {
-    applyColorEffect("blue");
+    applyColorEffect("blue", 20);
   }
 
-  // The rest of your code for drawing dynamic circles...
+  
 }
 
-function applyColorEffect(selectedColor) {
+function applyColorEffect(selectedColor, colorThreshold) {
+  image(img, 0, 0);
+  img.updatePixels();
+
   for (let vi = 0; vi < img.pixels.length; vi += 4) {
     let redVal = img.pixels[vi];
     let greenVal = img.pixels[vi + 1];
     let blueVal = img.pixels[vi + 2];
 
-    if (colorMatch(redVal, greenVal, blueVal, selectedColor)) {
+    if (colorMatch(redVal, greenVal, blueVal, selectedColor, colorThreshold)) {
       img.pixels[vi + 3] = 0;
     }
   }
@@ -76,7 +81,7 @@ function applyColorEffect(selectedColor) {
       let greenVal = img.pixels[index + 1];
       let blueVal = img.pixels[index + 2];
 
-      if (colorMatch(redVal, greenVal, blueVal, selectedColor)) {
+      if (colorMatch(redVal, greenVal, blueVal, selectedColor, colorThreshold)) {
         const angle = map(mouseX, 0, width, -4 * PI, 4 * PI, true) * (x / width) +
           map(mouseY, 0, height, -4 * PI, 4 * PI, true) * (y / height);
 
@@ -92,7 +97,7 @@ function applyColorEffect(selectedColor) {
   t += 0.01;
 }
 
-function colorMatch(r, g, b, selectedColor) {
+function colorMatch(r, g, b, selectedColor, colorThreshold) {
   if (selectedColor === "red") {
     return r > g + colorThreshold && r > b + colorThreshold;
   } else if (selectedColor === "yellow") {
