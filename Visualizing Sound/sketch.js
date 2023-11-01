@@ -8,15 +8,22 @@ let img;
 let angle = 0;
 let rotationSpeed = 2;
 
-let songSamples;
+let lineLength;
+let DELAY = 0;
 
 function preload() {
   song = loadSound("./SC.mp3");
   img = loadImage("./SC1.png");
 }
 
+function toWidth(_peakVal) {
+    return map(abs(_peakVal), 0, 1, 0, width);
+  }
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  lineLength = song.getPeaks().map(toWidth);
 
   backButton = createButton("Restart");
   backButton.position((width - width / 10) / 2 - 500, height - 80);
@@ -66,6 +73,17 @@ function draw() {
 
     imageMode(CENTER);
     image(img, width, height / 2, height / 4, height / 4);
+  }
+
+  
+  if (song.isPlaying()) {
+    push();
+    let tPos = song.currentTime() / song.duration();
+    let lIndexDelay = floor(tPos * lineLength.length + DELAY);
+    let lIndex = constrain(lIndexDelay, 0, lineLength.length - 1);
+    let x2 = lineLength[lIndex];
+    line(0, height / 2, x2, height/2);
+    pop();
   }
 }
 
