@@ -17,8 +17,8 @@ function preload() {
 }
 
 function toWidth(_peakVal) {
-    return map(abs(_peakVal), 0, 1, 0, width);
-  }
+  return map(abs(_peakVal), 0, 1, 0, width);
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -53,6 +53,7 @@ function draw() {
     fill(0);
     ellipse(width, height / 2, height / 2, height / 2);
     rotateImage();
+    drawWaveform();
   } else if (song.isPaused()) {
     background(61, 3, 11);
     playButton.html("Play");
@@ -73,17 +74,6 @@ function draw() {
 
     imageMode(CENTER);
     image(img, width, height / 2, height / 4, height / 4);
-  }
-
-  
-  if (song.isPlaying()) {
-    push();
-    let tPos = song.currentTime() / song.duration();
-    let lIndexDelay = floor(tPos * lineLength.length + DELAY);
-    let lIndex = constrain(lIndexDelay, 0, lineLength.length - 1);
-    let x2 = lineLength[lIndex];
-    line(0, height / 2, x2, height/2);
-    pop();
   }
 }
 
@@ -120,9 +110,31 @@ function stopClicked() {
 }
 
 function rotateImage() {
+  push();
   translate(width, height / 2);
   rotate(radians(angle));
   imageMode(CENTER);
   image(img, 0, 0, height / 4, height / 4);
+  pop();
   angle += rotationSpeed;
+}
+
+function drawWaveform() {
+  let currentTime = song.currentTime();
+  let duration = song.duration();
+  let playFraction = currentTime / duration;
+  let peakIndex = int(playFraction * lineLength.length);
+
+  stroke(255, 192, 203);
+  noFill();
+  beginShape();
+
+  let spacing = 15;
+  for (let i = 0; i < peakIndex; i += spacing) {
+    let x = map(i, 0, lineLength.length, 0, width);
+    let y = height;
+    let y1 = y - lineLength[i];
+    line(x, y, x, y1);
+  }
+  endShape();
 }

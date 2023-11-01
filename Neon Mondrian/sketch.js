@@ -15,10 +15,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   pixelDensity(1);
 
-  let aspectRatio = img.width / img.height;
-  let newHeight = windowHeight;
-  let newWidth = windowHeight * aspectRatio;
-  img.resize(newWidth, newHeight);
+  img.resize(0, height);
   img.loadPixels();
   originalPixels = img.pixels.slice();
   image(img, 0, 0);

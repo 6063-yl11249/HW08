@@ -11,5 +11,8 @@ I tried to apply the effect to different paintings, it works. The only problem i
 
 ### Visualizing Sound
 
-What song or sound did you pick?
-How are you visualizing its samples?
+*1. What song or sound did you pick?*
+I chose Strawberries & Cigarettes by  Troye Sivan.  
+
+*2. How are you visualizing its samples?*
+First, I drew the CD of the album to rotate when playing the music. And then, I drew lines by using the peak of the song to create a waveform.
